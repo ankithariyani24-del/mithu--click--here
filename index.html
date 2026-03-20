@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Important Question 💛</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    overflow: hidden;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    width: 90%;
+    max-width: 320px;
+}
+
+h1 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.emoji {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+button {
+    margin: 8px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.yes { background: #ff6b81; color: white; }
+.no { background: #dfe6e9; position: absolute; }
+.share { background: #25D366; color: white; }
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <div class="emoji">☀️🥐💛</div>
+
+    <h1>
+        Good Morning 😊<br>
+        Will you come for breakfast with me today?
+    </h1>
+
+    <button class="yes" onclick="yesClick()">Yes 💖</button>
+    <button class="no" id="noBtn">No 🙈</button>
+
+    <br><br>
+    <button class="share" onclick="shareWhatsApp()">Share 💬</button>
+</div>
+
+<!-- Background Music -->
+<audio id="bgMusic" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+// Play music on first touch (mobile restriction fix)
+document.body.addEventListener("click", () => {
+    document.getElementById("bgMusic").play();
+}, { once: true });
+
+function yesClick() {
+    document.body.innerHTML = `
+        <div style="display:flex;justify-content:center;align-items:center;height:100vh;text-align:center;font-family:sans-serif;">
+            <h1>Yay! 😍💛<br>See you soon for breakfast ☕🥐</h1>
+        </div>
+    `;
+}
+
+// Moving "No" button 😏
+const noBtn = document.getElementById("noBtn");
+
+noBtn.addEventListener("click", moveButton);
+noBtn.addEventListener("touchstart", moveButton);
+
+function moveButton() {
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 50);
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
+
+// WhatsApp Share
+function shareWhatsApp() {
+    const text = "Hey 😊 Will you come for breakfast with me today? 💛";
+    const url = "https://wa.me/?text=" + encodeURIComponent(text);
+    window.open(url, "_blank");
+}
+
+</script>
+
+</body>
+</html>
