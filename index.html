@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For My Highness Shivani 👑</title>
+<title>For Shivani</title>
 
 <style>
 body {
@@ -14,14 +14,13 @@ body {
     align-items: center;
     font-family: 'Segoe UI', sans-serif;
     background: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470') no-repeat center center/cover;
-    overflow: hidden;
 }
 
 .overlay {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0,0,0,0.5);
 }
 
 .card {
@@ -30,35 +29,40 @@ body {
     padding: 25px;
     border-radius: 20px;
     width: 90%;
-    max-width: 320px;
+    max-width: 340px;
     text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     z-index: 2;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
 h1 {
     font-size: 18px;
     min-height: 80px;
+    line-height: 1.5;
 }
 
 button {
     margin: 8px;
-    padding: 12px 18px;
+    padding: 12px 16px;
     border: none;
-    border-radius: 12px;
-    font-size: 15px;
+    border-radius: 10px;
+    font-size: 14px;
     cursor: pointer;
+    transition: 0.2s;
 }
 
-.yes { background: #ff6b81; color: white; }
-.no { background: #dfe6e9; position: absolute; }
-
-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    pointer-events: none;
+.option {
+    background: #f1f2f6;
 }
+
+.option:hover {
+    transform: scale(1.05);
+}
+
+.no {
+    position: absolute;
+}
+
 </style>
 </head>
 
@@ -68,14 +72,14 @@ canvas {
 
 <div class="card" id="card">
     <h1 id="text"></h1>
-    <button class="yes" onclick="nextStep()">Proceed 💖</button>
+    <div id="buttons"></div>
 </div>
 
 <canvas id="confetti"></canvas>
 
 <script>
 
-// Typing effect
+// typing effect
 function typeText(text, element, speed = 30) {
     element.innerHTML = "";
     let i = 0;
@@ -89,58 +93,95 @@ function typeText(text, element, speed = 30) {
     typing();
 }
 
-let step = 0;
 const textEl = document.getElementById("text");
+const btnDiv = document.getElementById("buttons");
 
-// Initial text
-typeText("👑 My Highness Shivani…\n\nYour humble servant has a request 🥺\nMay I ask something?", textEl);
+let step = 0;
 
-function nextStep() {
-    step++;
+// initial
+loadStep();
 
-    if(step === 1){
-        typeText("My Highness Shivani 👑\n\nThis servant has prepared a humble breakfast ☕🥐\nJust for you 💛", textEl);
+function loadStep() {
+
+    if(step === 0){
+        typeText("Shivani…\n\nA Gentleman (personal attendant) has a small request.\nMay I ask?", textEl);
+
+        btnDiv.innerHTML = `
+        <button class="option" onclick="next()">Go ahead</button>
+        <button class="option" onclick="playfulNo()">Not now</button>
+        `;
+    }
+
+    else if(step === 1){
+        typeText("It’s a normal office morning…\n\nBut mornings feel better with the right company.", textEl);
+
+        btnDiv.innerHTML = `
+        <button class="option" onclick="next()">Hmm okay…</button>
+        <button class="option" onclick="playfulNo()">Still thinking</button>
+        `;
     }
 
     else if(step === 2){
-        typeText("But… I dare not serve without your permission 🥺\n\nWill you allow me?", textEl);
-    }
+        typeText("So I was wondering…\n\nWould you like to join me for breakfast before work today?", textEl);
 
-    else if(step === 3){
-        typeText("So… My Highness 👑\n\nWill you come for breakfast with me today? 💛", textEl);
-
-        document.getElementById("card").innerHTML += `
-        <button class="yes" onclick="yesClick()">Yes 💖</button>
-        <button class="no" id="noBtn">No 🙈</button>
+        btnDiv.innerHTML = `
+        <button class="option" onclick="yesClick()">Yes, sounds good</button>
+        <button class="option no" id="noBtn">Maybe not</button>
         `;
 
         const noBtn = document.getElementById("noBtn");
+        noBtn.addEventListener("mouseenter", moveButton);
         noBtn.addEventListener("touchstart", moveButton);
-        noBtn.addEventListener("click", moveButton);
     }
 }
 
+// next step
+function next(){
+    step++;
+    loadStep();
+}
+
+// playful reject
+function playfulNo(){
+    typeText("Hmm… I’ll take that as ‘convince me better’ 🙂", textEl);
+}
+
+// YES
 function yesClick(){
     startConfetti();
 
-    document.body.innerHTML += `
-    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:white;">
-        <h1>😍💛 Thank you My Highness!<br>Your servant is honored ☕🥐</h1>
+    document.body.innerHTML = `
+    <div style="
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        text-align:center;
+        background: linear-gradient(135deg,#667eea,#764ba2);
+        color:white;
+        font-family:sans-serif;
+        padding:20px;
+    ">
+        <h1>
+        Nice choice 🙂<br><br>
+        Let’s make this morning slightly better.<br>
+        See you for breakfast.
+        </h1>
     </div>
     `;
 }
 
-// Moving No button
+// moving button
 function moveButton() {
     const btn = document.getElementById("noBtn");
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 50);
+    const x = Math.random() * (window.innerWidth - 120);
+    const y = Math.random() * (window.innerHeight - 60);
 
     btn.style.left = x + "px";
     btn.style.top = y + "px";
 }
 
-// Confetti 🎉
+// confetti
 function startConfetti() {
     const canvas = document.getElementById("confetti");
     const ctx = canvas.getContext("2d");
@@ -149,18 +190,18 @@ function startConfetti() {
     canvas.height = window.innerHeight;
 
     let pieces = [];
-    for(let i=0;i<150;i++){
+    for(let i=0;i<120;i++){
         pieces.push({
             x: Math.random()*canvas.width,
             y: Math.random()*canvas.height,
-            r: Math.random()*6+2,
-            d: Math.random()*150
+            r: Math.random()*5+2,
+            d: Math.random()*100
         });
     }
 
     function draw(){
         ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle = "gold";
+        ctx.fillStyle = "white";
         ctx.beginPath();
         for(let i=0;i<pieces.length;i++){
             let p = pieces[i];
@@ -177,7 +218,6 @@ function startConfetti() {
             p.y += Math.cos(p.d)+2;
             if(p.y > canvas.height){
                 p.y = 0;
-                p.x = Math.random()*canvas.width;
             }
         }
     }
